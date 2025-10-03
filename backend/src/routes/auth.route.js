@@ -4,6 +4,7 @@ import { checkAuthentification } from "../middleware/auth.middleware.js";
 import { arcjetProtection } from "../middleware/arcjet.middleware.js";
 import passport from "passport";
 import { ENV } from "../lib/env.js";
+import { generateToken } from "../lib/utils.js";
 
 const router = express.Router();
 
@@ -20,10 +21,12 @@ router.get(
 // Google callback
 router.get(
     "/google/callback",
-    passport.authenticate("google", { failureRedirect: "/login" }),
+    passport.authenticate("google", { failureRedirect: "/login", session: false  }),
     (req, res) => {
         // successfull authorization
-        res.redirect(`${ENV.CLIENT_URL}/`); // redirect to frontend
+        console.log("check ");
+        generateToken(req.user._id, res);
+        //res.redirect(`${ENV.CLIENT_URL}`); // redirect to frontend
     }
 );
 
