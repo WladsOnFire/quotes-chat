@@ -24,6 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.3",
     "resend": "^6.1.2",
+    "socket.io": "^4.8.1",
     "wlads-chat-app": "file:.."
   },
   "devDependencies": {

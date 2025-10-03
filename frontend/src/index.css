@@ -5,7 +5,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-image: url('http://denis-creative.com/wp-content/uploads/2019/03/bg-scroll.jpg');
+  background-size: 250px 250px;
+  max-width: 1920px;
+
+
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  min-height: 100vh;       
+  margin: 0;  
 }
+
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

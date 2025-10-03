@@ -17,7 +17,7 @@ export const arcjetProtection = async (req, res, next) => {
         }
 
         //anti spoofing
-        if (decision.results.some(isSpoofedBot)) {
+        if (conclusion.results.some(isSpoofedBot)) { 
             return res.status(403).json({ message: "Spoof bot activity detected" });
         }
 

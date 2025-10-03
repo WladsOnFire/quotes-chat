@@ -1,0 +1,64 @@
+
+.out,
+.in {
+    /* background-color: aqua; */
+    display: flex;
+    padding-left: 15px;
+    padding-right: 15px;
+    flex-direction: row;
+
+}
+
+.out{
+    justify-content: end;
+    text-align: left;
+}
+
+.in {
+    text-align: left;
+}
+
+.text{
+    margin: 0;
+    font-size: 18px;
+    font-weight: 400;
+    overflow-wrap: break-word;
+    max-width: 500px;
+    
+}
+
+.out .date {
+    text-align: right;
+}
+
+.in .messageCloud {
+    background-color: brown;
+    color: white;
+}
+
+.out .messageCloud {
+    background-color: rgb(240, 173, 50);
+}
+
+
+.messageCloud {
+    margin-bottom: 10px;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.imageMsg{
+    width: 500px;
+    border-radius: 15px;
+
+}
+
+.msgAndDate {
+    display: flex;
+    flex-direction: column;
+}
+
+.date{
+    margin: 0;
+    margin-bottom: 10px;
+}

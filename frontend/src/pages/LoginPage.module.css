@@ -1,0 +1,71 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+
+.signUpcontainer {
+    background-color: rgb(44, 35, 35);
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.title {
+    margin: auto;
+}
+.titleDesc{
+    margin: auto;
+    margin-bottom: 25px;
+}
+
+.nameInput,
+.emailInput,
+.passwordInput {
+    font-size: 16px;
+    border-radius: 8px;
+    background: #f1bb69;
+}
+
+
+
+.nameInputBlock,
+.passwordInputBlock,
+.emailInputBlock {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.submit:hover {
+    opacity: 0.8;
+}
+
+.submit{
+    border-radius: 10px;
+    height: 40px;
+    cursor: pointer;
+    background: #c97911;
+    color: white;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.signup:hover {
+    opacity: 0.8;
+}
+
+.signup{
+ text-decoration: none;
+ cursor: pointer;
+ color: white;
+ text-align: center;
+}
+
+
+

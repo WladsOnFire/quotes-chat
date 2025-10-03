@@ -1,0 +1,58 @@
+.contactListItem {
+    display: flex;
+    gap: 25px;
+    background: #fde0b4;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 15px;
+    width: 500px;
+    justify-content: space-between;
+}
+
+.contactListItem:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.pfp {
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    border: 2px solid black;
+    background: white;
+}
+
+.nameAndMessage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+}
+
+.profileSide {
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+.lastMsg {
+    margin: 0;
+}
+
+.pfpAndStatus {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.status {
+    margin: 0;
+    font-weight: 200;
+    font-size: 12px;
+    text-align: center;
+}
+
+
+.fullName {
+    margin: 0;
+}

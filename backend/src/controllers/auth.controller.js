@@ -2,6 +2,7 @@ import { sendWelcomeEmail } from "../emails/emailHandlers.js";
 import { generateToken } from "../lib/utils.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
+import cloudinary from "../lib/cloudinary.js";
 
 export const logOut = async (_, res) => {
     res.cookie("jwt", "", {maxAge: 0});
@@ -43,6 +44,11 @@ export const signUp = async (req, res) => {
     try {
         if (!fullName || !email, !password) {
             return res.status(400).json({ message: "All fields are required" }); // code 400 - bad request
+        }
+
+        const fullNameRegex = /^[a-zA-Z]+(?:[' -][a-zA-Z]+)* [a-zA-Z]+(?:[' -][a-zA-Z]+)*$/;
+        if (!fullNameRegex.test(fullName)) {
+            return res.status(400).json({ message: "Full name should be provided correctly" });
         }
 
         if (password.length < 8) {

@@ -1,0 +1,24 @@
+.btn {
+    color: white;
+    background: #c97911;
+    cursor: pointer;
+    width: 100%;
+    height: 40px;
+    border-radius: 14px;
+}
+
+.container{
+    width: 520px;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.desc{
+    font-size: 20px;
+}
+
+.title{
+    font-size: 28px;
+}
