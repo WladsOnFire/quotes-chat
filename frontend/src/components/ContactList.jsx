@@ -26,6 +26,7 @@ function ContactList() {
                     <div className={styles.profileSide}>
                         <div className={styles.pfpAndStatus}>
                             <img
+                                alt=""
                                 className={styles.pfp}
                                 src={contact.profilePic || "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"}
                             />

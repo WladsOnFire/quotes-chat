@@ -14,7 +14,7 @@ function ChatPage() {
 
     const { activeTab, selectedUser, setActiveTab } = useChatStore();
 
-    const { checkAuth, isCheckingAuth, authUser } = useAuthStore();
+    const { checkAuth} = useAuthStore();
 
 
 

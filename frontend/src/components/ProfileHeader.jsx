@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef} from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import styles from "./ProfileHeader.module.css";
 import PageLoader from "./PageLoader.jsx";
@@ -34,7 +34,7 @@ function ProfileHeader() {
                         <img
                             className={styles.pfp}
                             src={selectedImg || authUser.profilePic || "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"}
-                            alt="User image"
+                            alt="User"
                         />
                     </button>
                     {/* FILE UPLOAD HIDDEN input*/}
