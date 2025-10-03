@@ -42,6 +42,7 @@ Frontend .env
 
     NODE_ENV=development
     BASE_URL=
+    PORT=
 
 ---
 
@@ -57,12 +58,14 @@ Frontend:
 
     cd frontend
     npm install
-    npm run dev
+    npm run start
 
 ---
 
 🌐 Temporary Demo Link
 
-The application is temporarily deployed on a free Sevalla plan:  
-https://quotes-chat-3p15f.sevalla.app/
+The application is temporarily deployed on a free Sevalla plan:
+upd: something's wrong with deploy. no deployed demo available by now
+https://wlads-quotes-chat-ubfjz.sevalla.app/
+
 
