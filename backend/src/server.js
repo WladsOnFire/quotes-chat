@@ -19,7 +19,7 @@ const __dirname = path.resolve();
 // app.use(passport.initialize());
 
 app.use(express.json({limit: "6mb"})); //for parsing req.body, 6mb max file size
-app.use(cors({origin: ENV.CLIENT_URL, credentials: true})); //Cross-Origin Resource Sharing? allows browser requesting resources from different domain, that loaded the page
+app.use(cors({origin: ENV.CLIENT_URL, credentials: true}));  //Cross-Origin Resource Sharing? allows browser requesting resources from different domain, that loaded the page
 app.use(cookieParser()); //allows parsing cookies
 
 
