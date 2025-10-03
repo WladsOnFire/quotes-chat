@@ -8,12 +8,27 @@ import styles from "./ChatsList.module.css"
 
 function ChatsList() {
 
-  const { getMyChatPartners, chats, isUsersLoading, setSelectedUser } = useChatStore();
+  const { getMyChatPartners, lastMessages, chats, isUsersLoading, setSelectedUser, subscribeToMessages, unsubscribeFromMessages } = useChatStore();
   const { onlineUsers } = useAuthStore();
+
 
   useEffect(() => {
     getMyChatPartners();
-  }, [getMyChatPartners]);
+
+
+    subscribeToMessages();
+
+    // clean up
+    return () => unsubscribeFromMessages();
+  }, [getMyChatPartners, subscribeToMessages, unsubscribeFromMessages]);
+
+
+
+
+
+  // useEffect(() => {
+  //   getMyChatPartners();
+  // }, [getMyChatPartners]);
 
 
   if (chats.length === 0) return <NoChatsFound />;
@@ -35,15 +50,26 @@ function ChatsList() {
                   className={styles.pfp}
                   src={contact.profilePic || "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"}
                 />
-                <p className={styles.status}>{onlineUsers.includes(contact._id) ? "Online" : "Offline"}</p>
+                <p className={onlineUsers.includes(contact._id) ? styles.online : styles.offline}>{onlineUsers.includes(contact._id) ? "Online" : "Offline"}</p>
               </div>
 
               <div className={styles.nameAndMessage}>
                 <p className={styles.fullName}>{contact.fullName}</p>
-                <p className={styles.lastMsg}>last message ...</p>
+
+                <p className={styles.lastMsg}>
+                  {lastMessages[contact._id]?.text || "no unread messages"}
+                </p>
               </div>
             </div>
-            <p className={styles.date}>Aug 17, 2022</p>
+
+            <p className={styles.date}>
+              {lastMessages[contact._id]?.createdAt
+                ? new Date(lastMessages[contact._id].createdAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+                : "..."}
+            </p>
           </div>
         ))}
       </div>

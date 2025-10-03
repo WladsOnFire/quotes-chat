@@ -5,11 +5,11 @@ import { welcomeEmailTemplate } from "./emailTemplates.js";
 export const sendWelcomeEmail = async (email, name, clientURL) => {
 
     const {data, error} = await resendClient.emails.send({
-        from: ENV.EMAIL_FROM,
+        from: `${ENV.EMAIL_FROM}`,
         to: email,
         subject: "Welcome to Wlad's chat!",
         html: welcomeEmailTemplate(name, clientURL),
-    });
+    }); 
 
     if(error){
         console.log("Error occured while sending welcomee mail:", error);

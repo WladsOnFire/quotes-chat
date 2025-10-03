@@ -2,6 +2,10 @@ import cloudinary from "../lib/cloudinary.js";
 import { getReceiverSocketId, io } from "../lib/socket.js";
 import Message from "../models/Message.js";
 import User from "../models/User.js";
+import axios from "axios";
+
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const getAllContacts = async (req, res) => {
   try {
@@ -63,6 +67,7 @@ export const sendMessage = async (req, res) => {
       receiverId,
       text,
       image: imageUrl,
+      senderName: req.user.fullName
     });
 
     await newMessage.save();
@@ -73,6 +78,36 @@ export const sendMessage = async (req, res) => {
     }
 
     res.status(201).json(newMessage);
+
+
+
+
+
+    //if it is sent to the quotes bot
+    const user = await User.findById({ _id: receiverId });
+    if (user.isQuotesBot) {
+      const { data: randomQuote } = await axios.get("http://api.quotable.io/random?tags=&author=");
+
+
+      const replyMessage = new Message({
+        senderId: receiverId,
+        receiverId: senderId,
+        text: `${randomQuote.content} - ${randomQuote.author ? randomQuote.author : "unknown"}`,
+        senderName: user.fullName
+      });
+
+      await delay(3000);
+      await replyMessage.save();
+
+      const quoteReceiverSocketId = getReceiverSocketId(senderId);
+      if (quoteReceiverSocketId) {
+        io.to(quoteReceiverSocketId).emit("newMessage", replyMessage);
+      }
+    }
+
+
+
+
   } catch (error) {
     console.log("Error in message controller: ", error);
     res.status(500).json({ error: "Internal server error" });

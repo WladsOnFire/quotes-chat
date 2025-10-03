@@ -23,6 +23,11 @@
     animation: fadeIn 0.3s ease-out;
 }
 
+.msg{
+    background-color: #4caf50;
+    color: black;
+}
+
 .success {
     background-color: #4caf50;
 }

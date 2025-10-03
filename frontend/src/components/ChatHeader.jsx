@@ -27,7 +27,8 @@ function ChatHeader() {
                     className={styles.pfp}
                     src={selectedUser.profilePic || "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"}
                 />
-                <p className={styles.status}>{isOnline ? "Online" : "Offline"}</p>
+                <p className={isOnline ? styles.online : styles.offline}>{isOnline ? "Online" : "Offline"}</p>
+                              
             </div>
             <p className={styles.fullName}>{selectedUser.fullName}</p>
         </div >

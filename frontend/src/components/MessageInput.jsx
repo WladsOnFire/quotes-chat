@@ -11,12 +11,16 @@ function MessageInput() {
     const fileInputRef = useRef(null);
     const addToast = useToastStore.getState().addToast;
 
-    const { sendMessage } = useChatStore();
+    const { sendMessage, selectedUser } = useChatStore();
 
     const handleSendMessage = (e) => {
         e.preventDefault();
         if (!text.trim() && !imagePreview) return;
 
+        if(selectedUser == null) {
+            addToast("Please, select chat", "error")
+            return;
+        }
         sendMessage({
             text: text.trim(),
             image: imagePreview,
@@ -91,9 +95,10 @@ function MessageInput() {
                         IMG
                     </button>
                     <button
+ 
                         className={styles.send}
                         type="submit"
-                        disabled={!text.trim() && !imagePreview}
+                        disabled={!text.trim() && !imagePreview && !selectedUser}
                     >
                         Send
                     </button>

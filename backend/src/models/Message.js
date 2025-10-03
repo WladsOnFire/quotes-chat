@@ -20,6 +20,9 @@ const messageSchema = new mongoose.Schema(
         image: {
             type: String
         },
+        senderName: {
+            type: String
+        }
     },
     { timestamps: true } // createdAt & updatedAt
 );

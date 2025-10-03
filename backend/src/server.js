@@ -7,6 +7,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { ENV } from "./lib/env.js";
 import { app, server } from "./lib/socket.js";
+import { seedBots } from "./controllers/auth.controller.js";
 
 const PORT = ENV.EXPRESS_SERVER_PORT;
 
@@ -21,6 +22,10 @@ app.use(cookieParser()); //allows parsing cookies
 
 app.use("/api/messages", messageRoutes);
 app.use("/api/auth", authRoutes);
+
+
+//creates 3 quotes bots
+seedBots();
 
 //if in deploy - sends frontend page via express server endpoint
 if(ENV.NODE_ENV === "production"){

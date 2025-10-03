@@ -12,6 +12,7 @@ export const useChatStore = create((set, get) => ({
     selectedUser: null,
     isUsersLoading: false,
     isMessagesLoading: false,
+    lastMessages: {}, // { [userId]: { text, createdAt, senderName, unreadCount } }
 
 
     setActiveTab: (tab) => set({ activeTab: tab }),
@@ -86,24 +87,46 @@ export const useChatStore = create((set, get) => ({
 
     subscribeToMessages: () => {
         const { selectedUser } = get();
-        if (!selectedUser) return;
+        //if (!selectedUser) return;
 
         const socket = useAuthStore.getState().socket;
 
         socket.on("newMessage", (newMessage) => {
 
-            const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
-            if (!isMessageSentFromSelectedUser) return;
-            console.log("message sent to yo");
-            const currentMessages = get().messages;
-            set({ messages: [...currentMessages, newMessage] });
+            if (!selectedUser || newMessage.senderId !== selectedUser._id) {
 
-            
+                const { lastMessages } = get();
+                set({
+                    lastMessages: {
+                        ...lastMessages,
+                        [newMessage.senderId]: {
+                            text: newMessage.text || "[image]",
+                            senderName: newMessage.senderName || "Unknown",
+                            createdAt: newMessage.createdAt,
+                            unreadCount: (lastMessages[newMessage.senderId]?.unreadCount || 0) + 1,
+                        },
+                    },
+                });
+
+                addToast(`New message from ${newMessage.senderName}`, "msg", 9000);
+                //const createdAt = newMessage.createdAt;
+
+            } else {
+                set((state) => ({
+                    messages: [...state.messages, newMessage],
+                }));
+            }
+
+
+
+
+
+
             const notificationSound = new Audio("/sounds/notification.mp3");
 
             notificationSound.currentTime = 0; // reset to start
             notificationSound.play().catch((e) => console.log("Audio play failed:", e));
-            
+
         });
     },
 

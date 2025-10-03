@@ -45,13 +45,24 @@
     justify-content: space-around;
 }
 
-.status {
+
+.online,
+.offline {
     margin: 0;
     font-weight: 200;
     font-size: 12px;
     text-align: center;
 }
 
+.offline {
+    color: red;
+    font-weight: 600;
+}
+
+.online {
+    color: rgb(0, 223, 85);
+    font-weight: 600;
+}
 
 .fullName {
     margin: 0;

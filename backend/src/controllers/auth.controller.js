@@ -3,11 +3,64 @@ import { generateToken } from "../lib/utils.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
+import { ENV } from "../lib/env.js";
 
 export const logOut = async (_, res) => {
     res.cookie("jwt", "", {maxAge: 0});
     res.status(200).json({message: "Logged out successfully"});
 };
+
+
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const user = await User.findById(id).select("-password"); // no pass
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error in getUserById:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const seedBots = async () => {
+    try {
+    const bots = [
+      { fullName: "QuotesBot Harry", email: "quotesbot1@system.local", isQuotesBot: true},
+      { fullName: "QuotesBot Mike", email: "quotesbot2@system.local", isQuotesBot: true },
+      { fullName: "QuotesBot Milena", email: "quotesbot3@system.local",isQuotesBot: true },
+    ];
+
+    for (const bot of bots) {
+      const exists = await User.findOne({ email: bot.email });
+      if (!exists) {
+        const newBot = new User({
+          fullName: bot.fullName,
+          email: bot.email,
+          password: await bcrypt.hash(ENV.BOTPASS, 12),
+          profilePic: "https://api.dicebear.com/7.x/bottts/svg",
+          ...bot,
+        });
+        await newBot.save();
+        console.log(`Created bot: ${bot.fullName}`);
+      } else {
+        console.log(`Bot already exists: ${bot.fullName}`);
+      }
+    }
+  } catch (error) {
+    console.error("Error seeding bots:", error);
+  }
+}
+
 
 export const logIn = async (req, res) => {
     const {email, password} = req.body;

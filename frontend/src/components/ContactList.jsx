@@ -30,7 +30,7 @@ function ContactList() {
                                 className={styles.pfp}
                                 src={contact.profilePic || "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"}
                             />
-                            <p className={styles.status}>{onlineUsers.includes(contact._id) ? "Online" : "Offline"}</p>
+                            <p className={onlineUsers.includes(contact._id) ? styles.online : styles.offline}>{onlineUsers.includes(contact._id) ? "Online" : "Offline"}</p>
                         </div>
 
                         <div className={styles.nameAndMessage}>
