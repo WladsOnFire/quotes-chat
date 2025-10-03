@@ -13,22 +13,22 @@ router.use(arcjetProtection); //recognizes Postman app as bot =) comment for tes
 
 
 // redirect user to Google login
-router.get(
-    "/google",
-    passport.authenticate("google", { scope: ["profile", "email"] })
-);
+// router.get(
+//     "/google",
+//     passport.authenticate("google", { scope: ["profile", "email"] })
+// );
 
 // Google callback
-router.get(
-    "/google/callback",
-    passport.authenticate("google", { failureRedirect: "/login", session: false  }),
-    (req, res) => {
-        // successfull authorization
-        console.log("check ");
-        generateToken(req.user._id, res);
-        //res.redirect(`${ENV.CLIENT_URL}`); // redirect to frontend
-    }
-);
+// router.get(
+//     "/google/callback",
+//     passport.authenticate("google", { failureRedirect: "/login", session: false  }),
+//     (req, res) => {
+//         // successfull authorization
+//         console.log("check ");
+//         generateToken(req.user._id, res);
+//         //res.redirect(`${ENV.CLIENT_URL}`); // redirect to frontend
+//     }
+// );
 
 router.post("/signup", signUp);
 

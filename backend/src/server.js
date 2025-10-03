@@ -8,15 +8,15 @@ import cookieParser from "cookie-parser";
 import { ENV } from "./lib/env.js";
 import { app, server } from "./lib/socket.js";
 import { seedBots } from "./controllers/auth.controller.js";
-import passport from "passport";
-import "./lib/passport.js";
+// import passport from "passport";
+// import "./lib/passport.js";
 
 const PORT = ENV.EXPRESS_SERVER_PORT;
 
 
 const __dirname = path.resolve();
 
-app.use(passport.initialize());
+// app.use(passport.initialize());
 
 app.use(express.json({limit: "6mb"})); //for parsing req.body, 6mb max file size
 app.use(cors({origin: ENV.CLIENT_URL, credentials: true})); //Cross-Origin Resource Sharing? allows browser requesting resources from different domain, that loaded the page
