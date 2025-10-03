@@ -1,10 +1,11 @@
+import { ENV } from "../lib/env.js";
 import { resendClient, sender } from "../lib/resend.js"
 import { welcomeEmailTemplate } from "./emailTemplates.js";
 
 export const sendWelcomeEmail = async (email, name, clientURL) => {
 
     const {data, error} = await resendClient.emails.send({
-        from: `${sender.name} <${sender.email}>`,
+        from: ENV.EMAIL_FROM,
         to: email,
         subject: "Welcome to Wlad's chat!",
         html: welcomeEmailTemplate(name, clientURL),
