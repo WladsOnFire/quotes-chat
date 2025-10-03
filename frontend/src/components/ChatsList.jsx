@@ -9,7 +9,7 @@ import styles from "./ChatsList.module.css"
 function ChatsList() {
 
   const { getMyChatPartners, lastMessages, chats, isUsersLoading, setSelectedUser, subscribeToMessages, unsubscribeFromMessages } = useChatStore();
-  const { onlineUsers } = useAuthStore();
+  const { onlineUsers, authUser} = useAuthStore();
 
 
   useEffect(() => {
@@ -37,41 +37,45 @@ function ChatsList() {
     <>
       {isUsersLoading ? <PageLoader /> : <></>}
       <div className={styles.chatsListContainer}>
-        {chats.map((contact) => (
-          <div
-            key={contact._id}
-            className={styles.contactListItem}
-            onClick={() => setSelectedUser(contact)}
-          >
-            <div className={styles.profileSide}>
-              <div className={styles.pfpAndStatus}>
-                <img
-                  alt=""
-                  className={styles.pfp}
-                  src={contact.profilePic || "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"}
-                />
-                <p className={onlineUsers.includes(contact._id) ? styles.online : styles.offline}>{onlineUsers.includes(contact._id) ? "Online" : "Offline"}</p>
+        {chats.map((contact) => {
+          const alias = authUser.aliases?.[contact._id];
+          const displayName = alias || contact.fullName;
+          return (
+            <div
+              key={contact._id}
+              className={styles.contactListItem}
+              onClick={() => setSelectedUser(contact)}
+            >
+              <div className={styles.profileSide}>
+                <div className={styles.pfpAndStatus}>
+                  <img
+                    alt=""
+                    className={styles.pfp}
+                    src={contact.profilePic || "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"}
+                  />
+                  <p className={onlineUsers.includes(contact._id) ? styles.online : styles.offline}>{onlineUsers.includes(contact._id) ? "Online" : "Offline"}</p>
+                </div>
+
+                <div className={styles.nameAndMessage}>
+                  <p className={styles.fullName}>{displayName}</p>
+
+                  <p className={styles.lastMsg}>
+                    {lastMessages[contact._id]?.text || "no unread messages"}
+                  </p>
+                </div>
               </div>
 
-              <div className={styles.nameAndMessage}>
-                <p className={styles.fullName}>{contact.fullName}</p>
-
-                <p className={styles.lastMsg}>
-                  {lastMessages[contact._id]?.text || "no unread messages"}
-                </p>
-              </div>
+              <p className={styles.date}>
+                {lastMessages[contact._id]?.createdAt
+                  ? new Date(lastMessages[contact._id].createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                  : "..."}
+              </p>
             </div>
-
-            <p className={styles.date}>
-              {lastMessages[contact._id]?.createdAt
-                ? new Date(lastMessages[contact._id].createdAt).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-                : "..."}
-            </p>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
     </>

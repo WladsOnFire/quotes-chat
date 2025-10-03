@@ -1,7 +1,9 @@
 import express from "express";
-import { logIn, logOut, signUp, updateProfile, getUserById } from "../controllers/auth.controller.js";
+import { logIn, logOut, signUp, updateProfile, getUserById, setAlias } from "../controllers/auth.controller.js";
 import { checkAuthentification } from "../middleware/auth.middleware.js";
 import { arcjetProtection } from "../middleware/arcjet.middleware.js";
+import passport from "passport";
+import { ENV } from "../lib/env.js";
 
 const router = express.Router();
 
@@ -9,11 +11,29 @@ router.use(arcjetProtection); //recognizes Postman app as bot =) comment for tes
 
 
 
+// redirect user to Google login
+router.get(
+    "/google",
+    passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+// Google callback
+router.get(
+    "/google/callback",
+    passport.authenticate("google", { failureRedirect: "/login" }),
+    (req, res) => {
+        // successfull authorization
+        res.redirect(`${ENV.CLIENT_URL}/`); // redirect to frontend
+    }
+);
+
 router.post("/signup", signUp);
 
 router.post("/login", logIn);
 
 router.post("/logout", logOut);
+
+router.put("/users/:id/alias", checkAuthentification, setAlias);
 
 //router.get("/:id", getUserById);
 

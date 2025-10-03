@@ -15,9 +15,40 @@ export const useChatStore = create((set, get) => ({
     lastMessages: {}, // { [userId]: { text, createdAt, senderName, unreadCount } }
 
 
+    deleteChatWithUser: async (userId) => {
+        const { messages, selectedUser, setSelectedUser } = get();
+
+        try {
+            await axiosInstance.delete(`/messages/${userId}`);
+
+            if (selectedUser && selectedUser._id === userId) {
+                set({ messages: [], selectedUser: null });
+            }
+
+            addToast("Chat deleted successfully", "success");
+
+            get().getMyChatPartners();
+            get().getAllContacts();
+        } catch (error) {
+            console.log(error);
+            addToast(error.response?.data?.message || "Failed to delete chat", "error");
+        }
+    },
+
     setActiveTab: (tab) => set({ activeTab: tab }),
 
-    setSelectedUser: (selectedUser) => set({ selectedUser }),
+
+
+    setSelectedUser: (user) => {
+        const { authUser } = useAuthStore.getState();
+
+        const alias = authUser.aliases?.[user._id];
+
+        const selectedUser = alias ? { ...user, alias } : user;
+
+        set({ selectedUser });
+    },
+
 
     getAllContacts: async () => {
         const addToast = useToastStore.getState().addToast;
@@ -31,7 +62,25 @@ export const useChatStore = create((set, get) => ({
             set({ isUsersLoading: false });
         }
     },
-    
+
+    setAliasForUser: async (targetUserId, alias) => {
+        const { authUser } = useAuthStore.getState();
+        const addToast = useToastStore.getState().addToast;
+
+        try {
+            const res = await axiosInstance.put(`auth/users/${authUser._id}/alias`, {
+                targetUserId,
+                alias
+            });
+
+            //useAuthStore.setState({ authUser: { ...authUser, aliases: res.data.aliases } });
+            addToast("Alias updated successfully", "success");
+        } catch (error) {
+            addToast(error.response?.data?.message || "Failed to update alias", "error");
+        }
+    },
+
+
     getMyChatPartners: async () => {
         const addToast = useToastStore.getState().addToast;
         set({ isUsersLoading: true });

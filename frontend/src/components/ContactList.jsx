@@ -6,7 +6,7 @@ import styles from "./ContactList.module.css"
 
 function ContactList() {
     const { getAllContacts, allContacts, setSelectedUser, chats, isUsersLoading } = useChatStore();
-    const { onlineUsers } = useAuthStore();
+    const { onlineUsers, authUser } = useAuthStore();
 
     useEffect(() => {
         getAllContacts();
@@ -19,28 +19,32 @@ function ContactList() {
     return (
         <>
             {isUsersLoading ? <PageLoader /> : <></>}
-            {filteredContacts.map((contact) => (
-                <div
-                    key={contact._id}
-                    className={styles.contactListItem}
-                    onClick={() => setSelectedUser(contact)}
-                >
-                    <div className={styles.profileSide}>
-                        <div className={styles.pfpAndStatus}>
-                            <img
-                                alt=""
-                                className={styles.pfp}
-                                src={contact.profilePic || "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"}
-                            />
-                            <p className={onlineUsers.includes(contact._id) ? styles.online : styles.offline}>{onlineUsers.includes(contact._id) ? "Online" : "Offline"}</p>
-                        </div>
+            {filteredContacts.map((contact) => {
+                const alias = authUser.aliases?.[contact._id];
+                const displayName = alias || contact.fullName;
+                return (
+                    <div
+                        key={contact._id}
+                        className={styles.contactListItem}
+                        onClick={() => setSelectedUser(contact)}
+                    >
+                        <div className={styles.profileSide}>
+                            <div className={styles.pfpAndStatus}>
+                                <img
+                                    alt=""
+                                    className={styles.pfp}
+                                    src={contact.profilePic || "https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png"}
+                                />
+                                <p className={onlineUsers.includes(contact._id) ? styles.online : styles.offline}>{onlineUsers.includes(contact._id) ? "Online" : "Offline"}</p>
+                            </div>
 
-                        <div className={styles.nameAndMessage}>
-                            <p className={styles.fullName}>{contact.fullName}</p>
+                            <div className={styles.nameAndMessage}>
+                                <p className={styles.fullName}>{displayName}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </>
     );
 }

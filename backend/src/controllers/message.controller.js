@@ -19,6 +19,33 @@ export const getAllContacts = async (req, res) => {
   }
 };
 
+export const deleteChatWithUser = async (req, res) => {
+  try {
+    
+    const myId = req.user._id;
+    const { id: otherUserId } = req.params;
+    
+    if (myId.equals(otherUserId)) {
+      return res.status(400).json({ message: "Cannot delete chat with yourself." });
+    }
+
+    const result = await Message.deleteMany({
+      $or: [
+        { senderId: myId, receiverId: otherUserId },
+        { senderId: otherUserId, receiverId: myId },
+      ],
+    });
+
+    res.status(200).json({
+      message: `Deleted ${result.deletedCount} messages with user ${otherUserId}`,
+    });
+  } catch (error) {
+    console.error("Error deleting chat: ", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
 export const getMessagesByUserId = async (req, res) => {
   try {
     const myId = req.user._id;

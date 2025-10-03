@@ -9,6 +9,7 @@
 .container{
  display: flex;
  align-items: center;
+ justify-content: space-between;
 }
 
 .pfp {
@@ -36,9 +37,27 @@
     color: rgb(0, 223, 85);
     font-weight: 600;
 }
+.fullName:hover {
+    opacity: 0.5;
+}
 
 .fullName {
     margin: 0;
     font-size: 18px;
     font-weight: 500;
+    cursor: pointer;
+}
+
+.delete:hover{
+    opacity: 0.7;
+}
+
+
+.delete{
+    height: 40px;
+    border-radius: 15px;
+    cursor: pointer;
+    background:  red;
+    color: white;
+    font-size: 18px;
 }

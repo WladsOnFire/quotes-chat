@@ -6,75 +6,75 @@ import cloudinary from "../lib/cloudinary.js";
 import { ENV } from "../lib/env.js";
 
 export const logOut = async (_, res) => {
-    res.cookie("jwt", "", {maxAge: 0});
-    res.status(200).json({message: "Logged out successfully"});
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.status(200).json({ message: "Logged out successfully" });
 };
 
 
 export const getUserById = async (req, res) => {
-  try {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    if (!id) {
-      return res.status(400).json({ message: "User ID is required" });
+        if (!id) {
+            return res.status(400).json({ message: "User ID is required" });
+        }
+
+        const user = await User.findById(id).select("-password"); // no pass
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error("Error in getUserById:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
-
-    const user = await User.findById(id).select("-password"); // no pass
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json(user);
-  } catch (error) {
-    console.error("Error in getUserById:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
 };
 
 export const seedBots = async () => {
     try {
-    const bots = [
-      { fullName: "QuotesBot Harry", email: "quotesbot1@system.local", isQuotesBot: true},
-      { fullName: "QuotesBot Mike", email: "quotesbot2@system.local", isQuotesBot: true },
-      { fullName: "QuotesBot Milena", email: "quotesbot3@system.local",isQuotesBot: true },
-    ];
+        const bots = [
+            { fullName: "QuotesBot Harry", email: "quotesbot1@system.local", isQuotesBot: true },
+            { fullName: "QuotesBot Mike", email: "quotesbot2@system.local", isQuotesBot: true },
+            { fullName: "QuotesBot Milena", email: "quotesbot3@system.local", isQuotesBot: true },
+        ];
 
-    for (const bot of bots) {
-      const exists = await User.findOne({ email: bot.email });
-      if (!exists) {
-        const newBot = new User({
-          fullName: bot.fullName,
-          email: bot.email,
-          password: await bcrypt.hash(ENV.BOTPASS, 12),
-          profilePic: "https://api.dicebear.com/7.x/bottts/svg",
-          ...bot,
-        });
-        await newBot.save();
-        console.log(`Created bot: ${bot.fullName}`);
-      } else {
-        console.log(`Bot already exists: ${bot.fullName}`);
-      }
+        for (const bot of bots) {
+            const exists = await User.findOne({ email: bot.email });
+            if (!exists) {
+                const newBot = new User({
+                    fullName: bot.fullName,
+                    email: bot.email,
+                    password: await bcrypt.hash(ENV.BOTPASS, 12),
+                    profilePic: "https://api.dicebear.com/7.x/bottts/svg",
+                    ...bot,
+                });
+                await newBot.save();
+                console.log(`Created bot: ${bot.fullName}`);
+            } else {
+                console.log(`Bot already exists: ${bot.fullName}`);
+            }
+        }
+    } catch (error) {
+        console.error("Error seeding bots:", error);
     }
-  } catch (error) {
-    console.error("Error seeding bots:", error);
-  }
 }
 
 
 export const logIn = async (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
-    if(!email || !password){
-        return res.status(400).json({message: "Email and password are required"});
+    if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required" });
     }
 
     try {
-        const user = await User.findOne({email});
-        if(!user) return res.status(400).json({message: "Invalid entry data"});
+        const user = await User.findOne({ email });
+        if (!user) return res.status(400).json({ message: "Invalid entry data" });
 
         const checkPassword = await bcrypt.compare(password, user.password);
-        if(!checkPassword) return res.status(400).json({message: "Invalid entry data"});
+        if (!checkPassword) return res.status(400).json({ message: "Invalid entry data" });
 
         generateToken(user._id, res);
 
@@ -86,7 +86,25 @@ export const logIn = async (req, res) => {
         });
 
     } catch (error) {
-        console.log("Error occured in auth controller:",error);
+        console.log("Error occured in auth controller:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const setAlias = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const { targetUserId, alias } = req.body;
+
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        user.aliases.set(targetUserId, alias); // Map.set
+        await user.save();
+
+        res.status(200).json({ message: "Alias saved" });
+    } catch (error) {
+        console.log("Error setting alias:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 };
@@ -101,7 +119,7 @@ export const signUp = async (req, res) => {
 
         const fullNameRegex = /^[a-zA-Z]+(?:[' -][a-zA-Z]+)* [a-zA-Z]+(?:[' -][a-zA-Z]+)*$/;
         if (!fullNameRegex.test(fullName)) {
-            return res.status(400).json({ message: "Full name should be provided correctly" });
+            return res.status(400).json({ message: "Full name should be provided correctly. Example: (Tony Stark)" });
         }
 
         if (password.length < 8) {
@@ -139,12 +157,12 @@ export const signUp = async (req, res) => {
                 profilePic: resultUser.profilePic,
             }); //code 201 - created successfully
 
-            const {CLIENT_URL} = process.env;
-            if(!CLIENT_URL) throw new Error("CLIENT_URL is not set in .env");
-            
+            const { CLIENT_URL } = process.env;
+            if (!CLIENT_URL) throw new Error("CLIENT_URL is not set in .env");
+
             try {
                 await sendWelcomeEmail(resultUser.email, resultUser.fullName, CLIENT_URL);
-            } catch (error){
+            } catch (error) {
                 console.log("Failed to send welcome email:", error);
             }
         } else {
@@ -159,8 +177,8 @@ export const signUp = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const {profilePic} = req.body;
-        if(!profilePic) return res.status(400).json({ message: "Provide wanted profile picture"});
+        const { profilePic } = req.body;
+        if (!profilePic) return res.status(400).json({ message: "Provide wanted profile picture" });
 
         const userId = req.user._id;
 
@@ -168,13 +186,13 @@ export const updateProfile = async (req, res) => {
 
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            {profilePic: updateRes.secure_url},
-            {new: true}
+            { profilePic: updateRes.secure_url },
+            { new: true }
         );
 
         res.status(200).json(updatedUser);
     } catch (error) {
-        console.log("Error occured while updating user profile:",error);
+        console.log("Error occured while updating user profile:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 }

@@ -23,6 +23,14 @@ const userSchema = new mongoose.Schema(
     isQuotesBot: {
       type: Boolean,
       default: false,
+    },
+    aliases: {
+      type: Map,
+      of: String,
+      default: {},
+    },
+    googleId:{
+      type: String
     }
   },
   { timestamps: true } // createdAt & updatedAt

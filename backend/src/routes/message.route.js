@@ -4,6 +4,7 @@ import {
     getChatPartners,
     getMessagesByUserId,
     sendMessage,
+    deleteChatWithUser
 } from "../controllers/message.controller.js";
 import { checkAuthentification } from "../middleware/auth.middleware.js";
 import { arcjetProtection } from "../middleware/arcjet.middleware.js";
@@ -13,6 +14,7 @@ const router = express.Router();
 //arcjet protection + jwt authentification required for these routes
 router.use(arcjetProtection, checkAuthentification);
 
+router.delete("/:id", deleteChatWithUser);
 router.get("/contacts", getAllContacts);
 router.get("/chats", getChatPartners);
 router.get("/:id", getMessagesByUserId);
