@@ -31,6 +31,7 @@ export const useChatStore = create((set, get) => ({
             set({ isUsersLoading: false });
         }
     },
+    
     getMyChatPartners: async () => {
         const addToast = useToastStore.getState().addToast;
         set({ isUsersLoading: true });

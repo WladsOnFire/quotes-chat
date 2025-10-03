@@ -5,19 +5,21 @@ import PageLoader from "./PageLoader";
 import styles from "./ContactList.module.css"
 
 function ContactList() {
-    const { getAllContacts, allContacts, setSelectedUser, isUsersLoading } = useChatStore();
+    const { getAllContacts, allContacts, setSelectedUser, chats, isUsersLoading } = useChatStore();
     const { onlineUsers } = useAuthStore();
 
     useEffect(() => {
         getAllContacts();
     }, [getAllContacts]);
 
-
+    const filteredContacts = allContacts.filter(
+        (contact) => !chats.some((chat) => chat._id === contact._id)
+    );
 
     return (
         <>
             {isUsersLoading ? <PageLoader /> : <></>}
-            {allContacts.map((contact) => (
+            {filteredContacts.map((contact) => (
                 <div
                     key={contact._id}
                     className={styles.contactListItem}
