@@ -16,7 +16,7 @@ export const useChatStore = create((set, get) => ({
 
 
     deleteChatWithUser: async (userId) => {
-        const { messages, selectedUser, setSelectedUser } = get();
+        const { selectedUser } = get();
 
         try {
             await axiosInstance.delete(`/messages/${userId}`);
@@ -68,7 +68,7 @@ export const useChatStore = create((set, get) => ({
         const addToast = useToastStore.getState().addToast;
 
         try {
-            const res = await axiosInstance.put(`auth/users/${authUser._id}/alias`, {
+            await axiosInstance.put(`auth/users/${authUser._id}/alias`, {
                 targetUserId,
                 alias
             });

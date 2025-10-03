@@ -5,7 +5,7 @@ import styles from "./ChatHeader.module.css"
 
 function ChatHeader() {
     const { selectedUser, setSelectedUser, deleteChatWithUser, setAliasForUser} = useChatStore();
-    const { onlineUsers, authUser} = useAuthStore();
+    const { onlineUsers} = useAuthStore();
     const isOnline = onlineUsers.includes(selectedUser._id);
 
     useEffect(() => {
