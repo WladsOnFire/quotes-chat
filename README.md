@@ -16,6 +16,14 @@ Wlad's Quotes Chat App is a chat application with automatic responses from the b
 - 3 built-in chat bots that reply with quotes when the user sends a message
 
 ---
+Steps for user:
+
+- Login or sign up.
+- View the list of the available contacts
+- Go chatting =)
+- Send message for the Bots to get random quote with it`s author
+
+---
 
 ⚙️ Environment Variables
 
@@ -67,6 +75,7 @@ Frontend:
 The application is temporarily deployed on a free Sevalla plan:
 
     https://wlads-quotes-chat-ubfjz.sevalla.app/
+
 
 
 
