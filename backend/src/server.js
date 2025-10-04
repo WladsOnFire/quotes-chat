@@ -52,14 +52,14 @@ if (ENV.NODE_ENV === "production") {
 }
 
 try {
-server.listen(PORT, () => {
-    console.log("trying connecting to the db");
-    connectToDB();
-    //creates 3 quotes bots
-    seedBots();
-    console.log("bots seeded");
-    console.log(`Server is up and running on port: ${PORT || 4250}`);
-});
+    server.listen(PORT || 4250, () => {
+        console.log("trying connecting to the db");
+        connectToDB();
+        //creates 3 quotes bots
+        seedBots();
+        console.log("bots seeded");
+        console.log(`Server is up and running on port: ${PORT || 4250}`);
+    });
 } catch (error) {
     console.log("Encountered unexpected error:", error);
 }
