@@ -37,7 +37,7 @@ console.log("authentification routes enabled");
 
 
 
-//creates 3 quotes bots
+
 
 
 //if in deploy - sends frontend page via express server endpoint
@@ -51,10 +51,16 @@ if (ENV.NODE_ENV === "production") {
     console.log("production build redirect to the index.html static enabled");
 }
 
+try {
 server.listen(PORT, () => {
     console.log("trying connecting to the db");
     connectToDB();
+    //creates 3 quotes bots
     seedBots();
     console.log("bots seeded");
     console.log(`Server is up and running on port: ${PORT || 4250}`);
 });
+} catch (error) {
+    console.log("Encountered unexpected error:", error);
+}
+
