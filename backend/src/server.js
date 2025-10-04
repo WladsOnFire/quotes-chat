@@ -20,10 +20,10 @@ console.log("server.js entry");
 
 // app.use(passport.initialize());
 
-app.use(express.json({limit: "6mb"})); //for parsing req.body, 6mb max file size
+app.use(express.json({ limit: "6mb" })); //for parsing req.body, 6mb max file size
 console.log("json parsing enabled..");
 
-app.use(cors({origin: ENV.CLIENT_URL, credentials: true}));  //Cross-Origin Resource Sharing? allows browser requesting resources from different domain, that loaded the page
+app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));  //Cross-Origin Resource Sharing? allows browser requesting resources from different domain, that loaded the page
 console.log("cors policy cofigured");
 
 app.use(cookieParser()); //allows parsing cookies
@@ -38,15 +38,14 @@ console.log("authentification routes enabled");
 
 
 //creates 3 quotes bots
-seedBots();
-console.log("bots seeded");
+
 
 //if in deploy - sends frontend page via express server endpoint
-if(ENV.NODE_ENV === "production"){
+if (ENV.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../frontend/build")));
 
     //app.get("/*",(_,res) => {  // endpoint declaration in express < v5
-    app.use((_,res) => { // use this this in express v5+
+    app.use((_, res) => { // use this this in express v5+
         res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"))
     })
     console.log("production build redirect to the index.html static enabled");
@@ -55,5 +54,7 @@ if(ENV.NODE_ENV === "production"){
 server.listen(PORT, () => {
     console.log("trying connecting to the db");
     connectToDB();
+    seedBots();
+    console.log("bots seeded");
     console.log(`Server is up and running on port: ${PORT || 4250}`);
 });
