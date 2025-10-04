@@ -12,7 +12,7 @@ Wlad's Quotes Chat App is a chat application with automatic responses from the b
 - Welcome emails (with resend API support)
 - Image sharing in chat using Cloudinary
 - Anti-bot security and API rate limiting via Arcjet
-- Google Authentication (in development)
+- Google Authentication (not working by the moment, in development)
 - 3 built-in chat bots that reply with quotes when the user sends a message
 
 ---
@@ -21,7 +21,7 @@ Wlad's Quotes Chat App is a chat application with automatic responses from the b
 
 Backend .env
 
-    EXPRESS_SERVER_PORT=3000
+    EXPRESS_SERVER_PORT=4250
     NODE_ENV=development
     MONGODB_URI=
     JWT_SECRET=
@@ -65,7 +65,8 @@ Frontend:
 🌐 Temporary Demo Link
 
 The application is temporarily deployed on a free Sevalla plan:
-upd: something's wrong with deploy. no deployed demo available by now
-https://wlads-quotes-chat-ubfjz.sevalla.app/
+
+    https://wlads-quotes-chat-ubfjz.sevalla.app/
+
 
 
