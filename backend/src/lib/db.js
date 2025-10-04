@@ -9,7 +9,7 @@ export const connectToDB = async () => {
         const connection = await mongoose.connect(MONGODB_URI);
         console.log("Connected to the MongoDB: " + connection.connection.host);
     } catch (error){
-        console.error("Error appeared while connecting to MongoDB: " + error);
+        console.log("Error appeared while connecting to MongoDB: " + error);
         process.exit(1); // express exit codes // code 1 - fail, code 0 - success
     }
 }
